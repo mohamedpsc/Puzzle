@@ -7,9 +7,9 @@ public class Tile {
     /**
      * Variables Declaration.
      */
-    private static short TILEWIDTH = 100;
-    private static short TILEHEIGHT = 100;
-    private short value;
+    private static int TILEWIDTH = 100;
+    private static int TILEHEIGHT = 100;
+    private int value;
     private BufferedImage image;
     private TileIndex index;
     private Point p1;
@@ -20,10 +20,10 @@ public class Tile {
      * Create a new instance of Tile with an image.
      * @param value Short represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
      * @param image Buffered image which represent a small portion of the whole image to be formed when the puzzle is solved.
-     * @param i Short value represent it's current row index inside the 2d Tiles array.
-     * @param j Short value represent it's current column index inside the 2d Tiles array.
+     * @param i Int value represent it's current row index inside the 2d Tiles array.
+     * @param j Int value represent it's current column index inside the 2d Tiles array.
      */
-    public Tile(short value, BufferedImage image, short i, short j){
+    public Tile(int value, BufferedImage image, int i, int j){
         this.value = value;
         this.image = image;
         this.index = new TileIndex(i, j);
@@ -31,51 +31,51 @@ public class Tile {
     }
     /**
      * Create a new instance of Tile with an image.
-     * @param value Short represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
+     * @param value Int represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
      * @param image Buffered image which represent a small portion of the image to be sorted.
      */
-    public Tile(short value, BufferedImage image){
+    public Tile(int value, BufferedImage image){
         this.value = value;
         this.image = image;
     }
     /**
      * Create a new instance of Tile with a number.
-     * @param value Short represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
-     * @param i Short value represent it's current row index inside the 2d Tiles array.
-     * @param j Short value represent it's current column index inside the 2d Tiles array.
+     * @param value Int represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
+     * @param i Int value represent it's current row index inside the 2d Tiles array.
+     * @param j Int value represent it's current column index inside the 2d Tiles array.
      */
-    public Tile(short value, short i, short j){
+    public Tile(int value, int i, int j){
         this.value = value;
         this.index = new TileIndex(i, j);
         update();
     }
     /**
      * Create a new instance of Tile with a number.
-     * @param value Short represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
+     * @param value Int represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
      * @param index TileIndex the current row and column of the Tile inside the 2d Tiles array.
      */
-    public Tile(short value, TileIndex index){
+    public Tile(int value, TileIndex index){
         this.value = value;
         this.index = index;
         update();
     }
     /**
      * * Create a new instance of Tile with a number.
-     * @param value Short represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
+     * @param value Int represent it's correct order among other tiles. ranges from 0 to (PuzzleDimension^2)-1.
      */
-    public Tile(short value){
+    public Tile(int value){
         this.value = value;
     }
     /**
      * @return value.
      */
-    public short getValue() {
+    public int getValue() {
         return value;
     }
     /**
      * @param value
      */
-    public void setValue(short value) {
+    public void setValue(int value) {
         this.value = value;
     }
     /**
@@ -95,26 +95,26 @@ public class Tile {
      * Sets the Static Tile Width for all Tiles.
      * @param width value to be Stored to the Static Tile Width variable.
      */
-    public static void setTileWidth(short width){
+    public static void setTileWidth(int width){
         TILEWIDTH = width;
     }
     /**
      * Sets the Static Tile Height for all Tiles.
      * @param height value to be Stored to the Static Tile Height variable.
      */
-    public static void setTileHeight(short height){
+    public static void setTileHeight(int height){
         TILEHEIGHT = height;
     }
     /**
      * @return TileWidth.
      */
-    public static short getTileWidth(){
+    public static int getTileWidth(){
         return TILEWIDTH;
     }
     /**
      * @return TileHeight.
      */
-    public static short getTileHeight(){
+    public static int getTileHeight(){
         return TILEHEIGHT;
     }
     /**

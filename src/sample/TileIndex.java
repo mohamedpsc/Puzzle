@@ -1,39 +1,39 @@
 package sample;
 
 public class TileIndex {
-    private short i;
-    private short j;
+    private int i;
+    private int j;
     /**
      * Create a new TileIndex.
      * @param i Represents the Row Number.
      * @param j Represents the Column Number.
      */
-    public TileIndex(short i, short j) {
+    public TileIndex(int i, int j) {
         this.i = i;
         this.j = j;
     }
     /**
      * @return Row Number.
      */
-    public short getRow() {
+    public int getRow() {
         return i;
     }
     /**
      * @return Column Number.
      */
-    public short getColumn() {
+    public int getColumn() {
         return j;
     }
     /**
      * @param i Integer to set the Row Number.
      */
-    public void setRow(short i) {
+    public void setRow(int i) {
         this.i = i;
     }
     /**
      * @param j Integer to set the Row Number.
      */
-    public void setColumn(short j) {
+    public void setColumn(int j) {
         this.j = j;
     }
 }
