@@ -1,8 +1,8 @@
 package sample;
 
-import javafx.scene.layout.FlowPane;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -104,6 +104,18 @@ public class PuzzlePanel extends JPanel {
         spaceIndex = new TileIndex(DIMENSION-1, DIMENSION-1);
     }
     /**
+     * Draw all Panel Components.
+     * @param g Graphics used to draw components.
+     */
+    @Override
+    protected void paintComponent(Graphics g){
+        for(Tile[] x: tiles){
+            for(Tile y:x){
+                y.draw((Graphics2D)g);
+            }
+        }
+    }
+    /**
      * Move the Suitable Tile to the Right.
      */
     public void moveRight(){
@@ -199,5 +211,47 @@ public class PuzzlePanel extends JPanel {
         Tile temp = tiles[i][j];
         tiles[i][j]=tiles[i1][j1];
         tiles[i1][j1] = temp;
+    }
+    /**
+     * Check if the Puzzle is Solved.
+     * @return ~true if the Puzzle is solved, ~false if the Puzzle is still not solved.
+     */
+    public boolean won(){
+        int currentValue = 0;
+        for(int i=0;i<DIMENSION-1;i++){
+            for(int j=0;j<DIMENSION;j++){
+                if(tiles[i][j].getValue()<currentValue){
+                    return false;
+                }
+                currentValue = tiles[i][j].getValue();
+            }
+        }
+        for(int j=0;j<DIMENSION-1;j++){
+            if(tiles[DIMENSION-1][j].getValue()<currentValue){
+                return false;
+            }
+            currentValue = tiles[DIMENSION-1][j].getValue();
+        }
+        tiles[DIMENSION-1][DIMENSION-1] = winningTile;
+        winningTile.update();
+        return finished=true;
+    }
+
+    /**
+     * This is Function checks if the finish flag is set to true or not.
+     * @return boolean, finish Flag.
+     */
+    public boolean isFinished(){
+        return finished;
+    }
+    /**
+     * Update All Tiles position.
+     */
+    public void updateTiles(){
+        for(Tile[] x:tiles){
+            for(Tile y:x){
+                y.update();
+            }
+        }
     }
 }
