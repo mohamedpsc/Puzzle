@@ -168,4 +168,28 @@ public class Tile {
             return false;
         return true;
     }
+    /**
+     * @param g2 2D Graphics of the JPanel containing the tiles. it will be used so the Tile can draw itself inside the JPanel.
+     */
+    public void draw(Graphics2D g2){//, Color background, Color stroke){
+        if(value==-1){
+            g2.setColor(Color.WHITE);
+            g2.fillRect(p1.x, p1.y, TILEWIDTH, TILEHEIGHT);
+            g2.setColor(Color.black);
+            g2.drawRect(p1.x, p1.y, TILEWIDTH, TILEHEIGHT);
+        }else{
+            if(image!=null){
+                g2.drawImage(image,p1.x+index.getColumn()+2, p1.y, TILEWIDTH, TILEHEIGHT, null);
+                g2.drawRect(p1.x, p1.y, TILEWIDTH, TILEHEIGHT);
+            }else{
+                g2.setColor(Color.GRAY);
+                g2.fillRect(p1.x, p1.y, TILEWIDTH, TILEHEIGHT);
+                g2.setColor(Color.BLACK);
+                g2.drawRect(p1.x, p1.y, TILEWIDTH, TILEHEIGHT);
+                int size = (int) (Math.min(TILEHEIGHT, TILEWIDTH)*0.2);
+                g2.setFont(new Font("TimesRoman", Font.BOLD, size));
+                g2.drawString(Integer.toString(value), p1.x+(TILEWIDTH/2)-(size/4), p1.y+(TILEHEIGHT/2));
+            }
+        }
+    }
 }
