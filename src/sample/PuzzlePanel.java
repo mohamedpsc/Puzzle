@@ -8,12 +8,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 public class PuzzlePanel extends JPanel {
     public static int DIMENSION;
     private Tile[][] tiles;
     private Tile winningTile;
     private TileIndex spaceIndex;
+    private Stack<Directions> undo;
+    private Stack<Directions> redo;
     private boolean finished;
     /**
      * Create a new Puzzle Game.
@@ -45,6 +48,8 @@ public class PuzzlePanel extends JPanel {
      */
     private void init(){
         tiles = new Tile[DIMENSION][DIMENSION];
+        undo = new Stack<>();
+        redo = new Stack<>();
         finished = false;
     }
     /**
@@ -117,50 +122,70 @@ public class PuzzlePanel extends JPanel {
     }
     /**
      * Move the Suitable Tile to the Right.
+     * @param undo boolean state, true if the call is from undo Operation.
      */
-    public void moveRight(){
+    public void moveRight(boolean undo){
         if(spaceIndex.getColumn()!=0){
             tiles[spaceIndex.getRow()][spaceIndex.getColumn()-1].moveRight();
             tiles[spaceIndex.getRow()][spaceIndex.getColumn()].moveLeft();
             swap(spaceIndex.getRow(), spaceIndex.getColumn(), spaceIndex.getRow(), spaceIndex.getColumn()-1);
             spaceIndex.setColumn(spaceIndex.getColumn()-1);
             repaint();
+            if(undo){
+                redo.push(Directions.Right);
+            }
+            else this.undo.push(Directions.Right);
         }
     }
     /**
      * Move the Suitable Tile to the Left.
+     * @param undo boolean state, true if the call is from undo Operation.
      */
-    public void moveLeft(){
+    public void moveLeft(boolean undo){
         if(spaceIndex.getColumn()!=DIMENSION-1){
             tiles[spaceIndex.getRow()][spaceIndex.getColumn()+1].moveLeft();
             tiles[spaceIndex.getRow()][spaceIndex.getColumn()].moveRight();
             swap(spaceIndex.getRow(), spaceIndex.getColumn(), spaceIndex.getRow(), spaceIndex.getColumn()+1);
             spaceIndex.setColumn(spaceIndex.getColumn()+1);
             repaint();
+            if(undo){
+                redo.push(Directions.Left);
+            }
+            else this.undo.push(Directions.Left);
         }
     }
     /**
      * Move the Suitable Tile Up.
+     * @param undo boolean state, true if the call is from undo Operation.
      */
-    public void moveUp(){
+    public void moveUp(boolean undo){
         if(spaceIndex.getRow()!=DIMENSION-1){
             tiles[spaceIndex.getRow()+1][spaceIndex.getColumn()].moveUp();
             tiles[spaceIndex.getRow()][spaceIndex.getColumn()].moveDown();
             swap(spaceIndex.getRow(), spaceIndex.getColumn(), spaceIndex.getRow()+1, spaceIndex.getColumn());
             spaceIndex.setRow(spaceIndex.getRow()+1);
             repaint();
+            if(undo){
+                redo.push(Directions.Up);
+            }
+            else this.undo.push(Directions.Up);
         }
     }
     /**
      * * Move the Suitable Tile down.
+     * @param undo boolean state, true if the call is from undo Operation.
      */
-    public void moveDown(){
+    public void moveDown(boolean undo){
         if(spaceIndex.getRow()!=0){
             tiles[spaceIndex.getRow()-1][spaceIndex.getColumn()].moveDown();
             tiles[spaceIndex.getRow()][spaceIndex.getColumn()].moveUp();
             swap(spaceIndex.getRow(), spaceIndex.getColumn(), spaceIndex.getRow()-1, spaceIndex.getColumn());
             spaceIndex.setRow(spaceIndex.getRow()-1);
             repaint();
+            if(undo){
+                redo.push(Directions.Down);
+            }
+            else this.undo.push(Directions.Down);
         }
     }
     /**
@@ -171,20 +196,20 @@ public class PuzzlePanel extends JPanel {
     private boolean move(Tile tile){
         if(tile.getIndex().getColumn()==spaceIndex.getColumn()){
             if(tile.getIndex().getRow()==spaceIndex.getRow()+1){
-                moveUp();
+                moveUp(false);
                 return true;
             }
             else if(tile.getIndex().getRow()==spaceIndex.getRow()-1){
-                moveDown();
+                moveDown(false);
                 return true;
             }
         }else if(tile.getIndex().getRow()==spaceIndex.getRow()){
             if(tile.getIndex().getColumn()==spaceIndex.getColumn()+1){
-                moveLeft();
+                moveLeft(false);
                 return true;
             }
             else if(tile.getIndex().getColumn()==spaceIndex.getColumn()-1){
-                moveRight();
+                moveRight(false);
                 return true;
             }
         }
@@ -254,4 +279,55 @@ public class PuzzlePanel extends JPanel {
             }
         }
     }
+    /**
+     * Undo Last Move.
+     */
+    public void undo(){
+        if(undo.size()>0){
+            Directions undoPeek = undo.pop();
+            switch(undoPeek){
+                case Left:
+                    moveRight(true);
+                    break;
+                case Right:
+                    moveLeft(true);
+                    break;
+                case Up:
+                    moveDown(true);
+                    break;
+                case Down:
+                    moveUp(true);
+                    break;
+            }
+        }
+    }
+    /**
+     * Redo Last Undo.
+     */
+    public void redo(){
+        if(redo.size()>0){
+            Directions temp = redo.pop();
+            switch(temp){
+                case Left:
+                    moveRight(false);
+                    break;
+                case Right:
+                    moveLeft(false);
+                    break;
+                case Up:
+                    moveDown(false);
+                    break;
+                case Down:
+                    moveUp(false);
+                    break;
+            }
+        }
+    }
+}
+
+enum Directions{
+    Left,
+    Right,
+    Down,
+    Up
 }

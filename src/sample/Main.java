@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         StackPane root = new StackPane();
-        PuzzlePanel game = new PuzzlePanel(6);
+        PuzzlePanel game = new PuzzlePanel(4);
         primaryStage.setTitle("Hello World");
         SwingNode test = new SwingNode();
         test.setContent(game);
@@ -22,16 +22,22 @@ public class Main extends Application {
             System.out.println(e.getCode());
             switch (e.getCode()){
                 case A:
-                    game.moveLeft();
+                    game.moveLeft(false);
                     break;
                 case W:
-                    game.moveUp();
+                    game.moveUp(false);
                     break;
                 case D:
-                    game.moveRight();
+                    game.moveRight(false);
                     break;
                 case S:
-                    game.moveDown();
+                    game.moveDown(false);
+                    break;
+                case Z:
+                    if(e.isControlDown() && e.isShiftDown())
+                        game.redo();
+                    else if(e.isControlDown())
+                        game.undo();
                     break;
             }
         });
